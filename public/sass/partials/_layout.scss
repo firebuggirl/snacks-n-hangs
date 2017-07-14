@@ -1,0 +1,25 @@
+html {
+  font-size: 10px;
+}
+
+body {
+  background: $purple;
+  // background:#efefef;
+  // background:#35200b;
+  background:lighten(#000, 10%);
+  &:before {
+    content: '';
+    display: block;
+    background: $grad;
+    height: 10px;
+    width: 100%;
+  }
+}
+
+.inner {
+  max-width:900px;
+  margin: 0 auto;
+  @media all and (max-width: 900px) {
+    padding: 2rem;
+  }
+}

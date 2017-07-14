@@ -1,0 +1,13 @@
+mixin review(review)
+  .review__header
+    .review__author
+      img.avatar(src=review.author.gravatar)
+      p= review.author.name
+    .review__stars(title=`Rated ${review.rating} our of 5 stars`)
+      = `★`.repeat(review.rating)
+      = `☆`.repeat(5 - review.rating)
+    time.review__time(datetime=review.created)= h.moment(review.created).fromNow()
+  .review__body
+    p= review.text
+
+//-h.moment ...in helpers directory moment.js is a handy library for displaying dates. We need this in our templates to display things like "Posted 5 minutes ago"
