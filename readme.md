@@ -655,3 +655,13 @@ $ git push heroku master
 
 If existing Git repo, but in this case not:
 $ heroku git:remote -a snacks-n-hangs
+
+
+
+
+Watch Sass in separate terminal:
+
+sass --watch public/sass/style.scss:public/dist/style.css
+
+
+Note: This app is running node 7.10.1 run...nvm use 7.10.1 if app crashes

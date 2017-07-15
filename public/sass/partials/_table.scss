@@ -3,6 +3,9 @@
   td {
     padding: 5px;
   }
+  tr {
+    background: $mustard;
+  }
   tr:nth-child(even) {
     background: white;
   }
