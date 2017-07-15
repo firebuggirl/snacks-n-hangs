@@ -638,15 +638,20 @@ https://snacks-n-hangs-mviteyfgka.now.sh
 // Deploy to Heroku
 // ////////////////   
 
-heroku git:remote -a snacks-n-hangs
+1- create new app via Heroku UI
+   -set up env variables via Heroku UI/Settings/Config Vars + choose node buildpack
 
 
-heroku addons:create mongolab
+Bash:
+2-
+$ heroku login
+$ cd my-project/
+$ git init
+$ heroku git:remote -a snacks-n-hangs
+$ git add .
+$ git commit -am "make it better"
+$ git push heroku master
 
-Created mongolab-fluffy-96391 as MONGODB_URI
 
-heroku addons:open mongolab
-
-heroku config:get MONGODB_URI
-
-returns: mongodb://heroku_mzm7w9ld:1fsbo400qdou1uivc90j7t4vi@ds157682.mlab.com:57682/heroku_mzm7w9ld
+If existing Git repo, but in this case not:
+$ heroku git:remote -a snacks-n-hangs
