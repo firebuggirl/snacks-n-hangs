@@ -34,7 +34,7 @@ require('./models/Review');
 // Start our app!
 const app = require('./app');
 
-// Constants
+// Constants for Docker
 // const PORT = 8080;
 // const HOST = '0.0.0.0';//Docker host
 //
