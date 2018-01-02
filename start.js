@@ -35,18 +35,18 @@ require('./models/Review');
 const app = require('./app');
 
 // Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';//Docker host
+// const PORT = 8080;
+// const HOST = '0.0.0.0';//Docker host
+//
+//
+// app.listen(PORT, HOST);
+// console.log(`Running on http://${HOST}:${PORT}`);
 
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
-
-
-// app.set('port', process.env.PORT || 7777);
-// const server = app.listen(app.get('port'), () => {
-//   console.log(`Express running → PORT ${server.address().port}`);
-// });
+app.set('port', process.env.PORT || 7777);
+const server = app.listen(app.get('port'), () => {
+  console.log(`Express running → PORT ${server.address().port}`);
+});
 
 //Temp send email...use to test that Mailtrap testing mail server is working...dev mode only ...tutorial #28
 //require('./handlers/mail');
