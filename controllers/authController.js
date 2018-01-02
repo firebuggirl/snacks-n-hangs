@@ -78,7 +78,7 @@ exports.reset = async (req, res) => {
 
 exports.confirmedPasswords = (req, res, next) => {
   if (req.body.password === req.body['password-confirm']) {//use square brackets when accessing a property on an object with a '-'
-    next(); // keepit going!
+    next(); // keep it going!
     return;
   }
   req.flash('error', 'Passwords do not match!');

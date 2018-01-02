@@ -39,7 +39,7 @@ created account @ mlab.com for hosting mongodb DBs
 
 To reference a value/variable in pug file:
 
-#{dog}  ....for text
+` #{dog} ` ....for text
 alt=`Dog ${dog}`  ....for attributes have to use es6 JS syntax
 
 
@@ -60,7 +60,7 @@ ex, in _storeForm.pug: pre= h.dump(store)
 
 NOTE: app will not work if running node -v 6.9.5, make sure to first switch to nove -v 7.10 in terminal: nvm use 7.10
 
-run node start
+run `node start`
 
 //////////
 // Steps to creating a new store route:
@@ -205,7 +205,7 @@ Loading sample data:
 
 run:
 
-npm run sample
+` npm run sample `
 
 run blowitallaway ....deletes all data
 
@@ -665,3 +665,7 @@ sass --watch public/sass/style.scss:public/dist/style.css
 
 
 Note: This app is running node 7.10.1 run...nvm use 7.10.1 if app crashes
+
+## For security checks run:
+
+` nsp check `
