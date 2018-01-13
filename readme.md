@@ -56,76 +56,77 @@ Anywhere you see app.use -> means using global middleware
 
 
 To create a 'dump' similar to var dump, put this code into pug file:
-ex, in _storeForm.pug: pre= h.dump(store)
+ex, in ` _storeForm.pug: pre= h.dump(store)`
 
-NOTE: app will not work if running node -v 6.9.5, make sure to first switch to nove -v 7.10 in terminal: nvm use 7.10
+NOTE: app will not work if running node -v 6.9.5, make sure to first switch to node -v 7.10 in terminal: nvm use 7.10
 
 run `node start`
 
-//////////
-// Steps to creating a new store route:
-// 1) Create new route via routes/index.js
-// 2) Create a controller via controllers/storeController.js ..ie., exports.getStoreBySlug....this queries database for data and passes the data to be rendered to the template
-// 3) create a store.pug file
-// 4) For Google maps config/params, see exports.staticMap in helpers.js (note: MongoDB does lat/long and Google does long/lat). Place this helper in store.pug file...ie.,     img.single__map(src=h.staticMap(store.location.coordinates))
-// NOTE: backticks `` are used when generating value for href on the fly
-//
-Models only need to be imported once in start.js
+## Steps to creating a new store route:
+ - 1) Create new route via routes/index.js
+ - 2) Create a controller via controllers/storeController.js ..ie., exports.getStoreBySlug....this queries database for data and passes the data to be rendered to the template
+ - 3) create a store.pug file
+ - 4) For Google maps config/params, see exports.staticMap in helpers.js (note: MongoDB does lat/long and Google does long/lat). Place this helper in store.pug file...ie.,     img.single__map(src=h.staticMap(store.location.coordinates))
+
+*  NOTE: `backticks` are used when generating value for href on the fly
+
+ - Models only need to be imported once in start.js
 
 
 /////////////////
 // Reset lost/forgotten password
 // /////////////   
-Multi-step process:
+# Multi-step process:
 
--set a reset token, along with an expiration date, in user if user has email address on file
+- set a reset token, along with an expiration date, in user if user has email address on file
 
--email info to user, and if user has proper token and date that is not expired, then they will be able to reset password
+- email info to user, and if user has proper token and date that is not expired, then they will be able to reset password
 
--index.js:
-create post route for /account/forgot
--'get' route for /account/reset/:token
--'post' route for /account/reset/:token
+ * index.js:
+ - create post route for /account/forgot
+ - 'get' route for /account/reset/:token
+ - 'post' route for /account/reset/:token
 
 
--authController.js:
--create 'forgot' authentication method
--import Mongoose
--include reference to user model
--Send them an email with the token
--redirect to login page
--create exports.reset method in authController.js
--create exports.confirmedPasswords method/middleware
--create exports.update method/middleware
--require promisify
--create setPassword method/middleware
+ * authController.js:
+ - create 'forgot' authentication method
+ - import Mongoose
+ - include reference to user model
+ - Send them an email with the token
+ - redirect to login page
+ - create exports.reset method in authController.js
+ - create exports.confirmedPasswords method/middleware
+ - create exports.update method/middleware
+ - require promisify
+ - create setPassword method/middleware
 
-User.js:
--add resetPasswordToken: String,
--resetPasswordExpires: Date to userSchema
+ * User.js:
+ - add resetPasswordToken: String,
+ - resetPasswordExpires: Date to userSchema
 
-reset.pug:
--create reset.pug file with reset form...leave off "action" attribute so page will return to itself
+ * reset.pug:
+ - create reset.pug file with reset form...leave off "action"   attribute so page will return to itself
 
 
 ////////////////////
 // Sending email with Node.js
 ////////////////////
 //
- authController.js:
+ * authController.js:
+
  const mail = require('../handlers/mail');
 
- handlers/mail.js:
- const nodemailer = require('nodemailer');
- const pug = require('pug');
- const juice = require('juice');
- const htmlToText = require('html-to-text');
- const promisify = require('es6-promisify');
+ * handlers/mail.js:
+   const nodemailer = require('nodemailer');
+   const pug = require('pug');
+   const juice = require('juice');
+   const htmlToText = require('html-to-text');
+   const promisify = require('es6-promisify');
 
-authController.js:
--add req.flash('success', `You have been emailed a password reset link.`); to exports.forgot method
--add const mail = require('../handlers/mail');
--add   
+ * authController.js:
+ - add req.flash('success', `You have been emailed a password reset link.`); to exports.forgot method
+ - add const mail = require('../handlers/mail');
+ - add   
    await mail.send({
     user,
     filename: 'password-reset',
@@ -133,171 +134,179 @@ authController.js:
     resetURL
   });
 
-Mailtrap.io (freemium version) - rather than setting up email with SMTP server like Postmark app for real email, use Mailtrap for dev mode..fakes being a mail server
--grab username and mail password from Mailtrap SMTP settings interface and add to variables.env file
+  `Mailtrap.io (freemium version)` - rather than setting up email with SMTP server like Postmark app for real email, use Mailtrap for dev mode..fakes being a mail server
+  -grab username and mail password from Mailtrap SMTP settings interface and add to variables.env file
 
-https://mailtrap.io/
+ https://mailtrap.io/
 
-transport = way to deal with sending different ways of sending email, w/ SMTP being the most popular
+  transport = way to deal with sending different ways of sending email, w/ SMTP being the most popular
 
 
-///////////
-// Create a relationship between each store and each actual user
-// //////////  
-Store.js:
+  ///////////
+  // Create a relationship between each store and each actual user
+  // //////////  
+ * Store.js:
 
-author: {
-type: mongoose.Schema.ObjectId,
-ref: 'User',
-required: 'You must supply an author'
-}
+    author: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: 'You must supply an author'
+    }
 
-controllers/storeController.js:
+ * controllers/storeController.js:
 
--add this to exports.createStore method/middleware-
+ - add this to exports.createStore method/middleware-
 
-req.body.author = req.user._id;
+    ` req.body.author = req.user._id; `
 
--create new store, go to database and query user and store collections to see relationship created via  "_id": ObjectId
+ - create new store, go to database and query user and store collections to see relationship created via
+  ` "_id": ObjectId `
 
-"populate" = bring in info about author and place/embed in store collection
+ - "populate" = bring in info about author and place/embed in store  collection
 
--add to exports.getStoreBySlug to embed info about author into each store collection-
+ - add to exports.getStoreBySlug to embed info about author into each store collection-
 
-.populate('author'); - do not include sensitive info
+     `.populate('author');` - do not include sensitive info
 
--add:
+ - add:
 
-const confirmOwner = (store, user) => {
-  if (!store.author.equals(user._id)) {
-    throw Error('You must own a store in order to edit it!');
-  }
-};
+  ` const confirmOwner = (store, user) => {
+    if (!store.author.equals(user._id)) {
+      throw Error('You must own a store in order to edit it!');
+    }
+  }; `
 
-run this function inside of editStore:
+ - run this function inside of editStore:
 
-confirmOwner(store, req.user);
+   ` confirmOwner(store, req.user); `
 
 ////////
 
-store.pug:
-..do quick dump of store to see author _id in store collection...
-pre= h.dump(store)
+  * store.pug:
+   ..do quick dump of store to see `author _id` in store collection...
+     ` pre= h.dump(store) `
 
 ///////
-Create new user account and new store...now cannot edit stores can only be accomplished
+* Create new user account and new store...now cannot edit stores can only be accomplished
 if the correct user is logged in!
 
 /////
-Update interface so can only see edit/pencil icon that relates to specific user/store owner
+  * Update interface so can only see edit/pencil icon that relates to specific user/store owner
 
-storeCard.pug add:
+  * storeCard.pug add:
 
-if user && store.author.equals(user._id)
+ `if user && store.author.equals(user._id)`
 
 /////////////////
 // Ajax Rest API
 ////////////////   
 
-Loading sample data:
+* Loading sample data:
 
-"sample" script in package.json -> runs script called load-sample-data.js (not part of our app, so need to 'require' env variables + connection to DB, etc..) + "blowitallaway" does the same, but then deletes everything
+    "sample" script in package.json -> runs script called load-sample-data.js (not part of our app, so need to 'require' env variables + connection to DB, etc..) + "blowitallaway" does the same, but then deletes everything
 
-run:
+    run:
 
-` npm run sample `
+    ` npm run sample `
 
-run blowitallaway ....deletes all data
+    `run blowitallaway` ....deletes all data
 
 /////////////////////
 // JSON endpoints and creating MongoDB indexes
 // /////////////////
 
-Store.js :
--define indexex ...index type of 'text' enables search for stores, etc...can now use '$text' operator on queries
--create compound index on 'name' and 'description' fields
+* Store.js :
+  - define indexex ...index type of 'text' enables search for stores, etc...can now use '$text' operator on queries
 
-Mongo shell examples:
-db.events.createIndex( { "name" : "text", "description" : "text" } ....already created this in Store.js
-- run 'db.stores.getIndexes()' to see indexes or check in 'compass' app interface
-Search ex:
--db.stores.find( { $text: { $search: "coffee" } } )
+  - create compound index on 'name' and 'description' fields
 
-routes/index.js:
+* Mongo shell examples:
 
-router.get('/api/search', catchErrors(storeController.searchStores));
+  ` db.events.createIndex( { "name" : "text", "description" : "text" } ` ....already created this in Store.js
 
-controllers/storeController:
+  - run  `'db.stores.getIndexes()' ` to see indexes or check in 'compass' app interface
 
-create searchStores method
+  - Search ex:
+  - ` db.stores.find( { $text: { $search: "coffee" } } ) `
+
+* routes/index.js:
+
+  - ` router.get('/api/search', catchErrors(storeController.searchStores)); `
+
+  -  controllers/storeController:
+      create searchStores method
 
 //////////////////
 // Create AJAX Search interface
 // ///////////////
 
--create typeAhead.js
+- create typeAhead.js
 
 
-public/javascripts/delicious-app.js:
--import typeAhead from './modules/typeAhead';
--typeAhead( $('.search') );
+* public/javascripts/delicious-app.js:
+
+  - import typeAhead from './modules/typeAhead';
+  - ` typeAhead( $('.search') ); `
 
 
 ///////////////////
 // Create Geospatial Ajax endpoint
 // ///////////////
 //
-Store.js:
+* Store.js:
 
-- storeSchema.index({ location: '2dsphere' });//store metadata about location as Geospatial data to be able to search for stores near lat/long search
+  - ` storeSchema.index({ location: '2dsphere' }) `;//store metadata about location as Geospatial data to be able to search for stores near lat/long search
 
-Mongo shell..search for new index (or use Compass app):
+  - Mongo shell..search for new index (or use Compass app):
 
-db.stores.getIndexes()
+  ` db.stores.getIndexes() `
 
-index.js:
+* index.js:
 
--router.get('/api/stores/near', catchErrors(storeController.mapStores));
+  - ` router.get('/api/stores/near', catchErrors(storeController.mapStores)); `
 
-controllers/storeController.js:
+* controllers/storeController.js:
 
--create mapStores method
+  - create mapStores method
 
 ///////////////////
 // Plotting Stores on a Custom Google Map / use own API (for images in map) from own site
 // ///////////////
 
-routes/index.js:
+* routes/index.js:
 
-- router.get('/map', storeController.mapPage);
+- ` router.get('/map', storeController.mapPage); `
 
 
-controllers/storeController.js:
+* controllers/storeController.js:
 
-- exports.mapPage = (req, res) => {
+- ` exports.mapPage = (req, res) => {
   res.render('map', { title: 'Map' });
-};
+}; `
 
 - don't forget to include "photo" field on line 153 in order to see our API/photo for each location appear in maps
-const stores = await Store.find(q).select('slug name description location photo').limit(10);
 
-public/javascripts/modules directory:
+` const stores = await Store.find(q).select('slug name description location photo').limit(10); `
 
-- create map.js file
-+ create makeMap
-+loadPlaces
-+mapOptions functions
-+ add import { $ } from './bling';
+* public/javascripts/modules directory:
 
-public/javascripts/delicious-app.js:
-- makeMap( $('#map') );
--import makeMap from './modules/map';
+# create map.js file
+ *  create makeMap
+ * loadPlaces
+ * mapOptions functions
+ * add import { $ } from './bling';
 
-views directory:
-- create map.pug file
+* public/javascripts/delicious-app.js:
+
+  - ` makeMap( $('#map') ); `
+  - import makeMap from './modules/map';
+
+* views directory:
+ - create map.pug file
 
 
-layout.pug:
+* layout.pug:
+
 Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?key=${process.env.MAP_KEY}&libraries=places`
 
 
@@ -305,108 +314,110 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
 // Pushing user data to our API
 // ///////////////////// Tutorial #35
 
-models/User.js:
+* models/User.js:
 
-hearts: [
+` hearts: [
     { type: mongoose.Schema.ObjectId, ref: 'Store' }
-  ]
+  ] `
 
-mixins/storeCard.pug:
+* mixins/storeCard.pug:
 
-if user
-  .store__action.store__action--heart
-    form.heart(method="POST" action=`/api/stores/${store._id}/heart`)
-      - const heartStrings = user.hearts.map(obj => obj.toString())
-      - const heartClass = heartStrings.includes(store._id.toString()) ? 'heart__button--hearted' : ''
-      button.heart__button(type="submit" name="heart" class=heartClass)
-        != h.icon('heart')
+``  if user
+    .store__action.store__action--heart
+      form.heart(method="POST" action=`/api/stores/${store._id}/heart`)
+        - const heartStrings = user.hearts.map(obj => obj.toString())
+        - const heartClass = heartStrings.includes(store._id.toString()) ? 'heart__button--hearted' : ''
+        button.heart__button(type="submit" name="heart" class=heartClass)
+          != h.icon('heart') ``
 
-routes/index.js:
+ * routes/index.js:
 
-router.post('/api/stores/:id/heart', catchErrors(storeController.heartStore));
+ ` router.post('/api/stores/:id/heart',   catchErrors(storeController.heartStore)); `
 
-controllers/storeController.js:
+* controllers/storeController.js:
 
-create exports.heartStore method/middleware
+- create exports.heartStore method/middleware
 
 - const User = mongoose.model('User');
 
 
-public/javascripts/modules:
+* public/javascripts/modules:
 
--create new heart.js file to update hearts/favs on the fly w/out page refresh
+ - create new heart.js file to update hearts/favs on the fly w/out page refresh
 
 
-public/javascripts/delicious-app.js:
+* public/javascripts/delicious-app.js:
 
-const heartForms = $$('form.heart');
-heartForms.on('submit', ajaxHeart);
+    const heartForms = $$('form.heart');
+    heartForms.on('submit', ajaxHeart);
 
-import ajaxHeart from './modules/heart';
+    import ajaxHeart from './modules/heart';
 
-...don't forget to refresh DB after changes
+    ...don't forget to refresh DB after changes
 
 ///////////////////////
 // Displaying hearted stores
 // ////////////////////   
 //
-routes/index.js:
+* routes/index.js:
 
-router.get('/hearts', storeController.getHearts);
+  ` router.get('/hearts', storeController.getHearts); `
 
-controllers/storeController.js:
+  * controllers/storeController.js:
 
-exports.getHearts = async (req, res) => {
-  const stores = await Store.find({
-    _id: { $in: req.user.hearts }
-  });
-  res.render('stores', { title: 'Hearted Stores', stores });
-};
+  `  exports.getHearts = async (req, res) => {
+      const stores = await Store.find({
+        _id: { $in: req.user.hearts }
+      });
+      res.render('stores', { title: 'Hearted Stores', stores });
+   }; `
 
 /////////////////////
 // Adding a reviews data model
 // //////////////////     
 
-routes/index.js:
+* routes/index.js:
 
--require new reviews model
-const reviewController = require('../controllers/reviewController');
+  - require new reviews model
+    ` const reviewController =  require('../controllers/reviewController'); `
 
-router.post('/reviews/:id',
-  authController.isLoggedIn,
-  catchErrors(reviewController.addReview)
-);  
-
-
-models directory:
-
--create new Review.js model/schema
-
-controllers directory:
-
-create new reviewController.js file + new addReview method/middleware
+  ` router.post('/reviews/:id',
+    authController.isLoggedIn,
+    catchErrors(reviewController.addReview)
+  );  `
 
 
-views/mixins directory:
+* models directory:
 
-create new _reviewForm.pug template
+ - create new Review.js model/schema
 
+* controllers directory:
 
-views/store.pug:
- -add _reviewForm mixin
-
- -include mixins/_reviewForm
-
- -if user
-      +reviewForm(store)
-
-start.js:
--Import all of our reviews
-
-require('./models/Review');
+    - create new reviewController.js file + new addReview method/middleware
 
 
--re-start database...
+* views/mixins directory:
+
+ - create new `_reviewForm.pug` template
+
+
+* views/store.pug:
+
+ - add `_reviewForm` mixin
+
+ - ` include mixins/_reviewForm `
+
+ - ` if user
+      +reviewForm(store) `
+
+* start.js:
+
+  - Import all of our reviews
+
+   ` require('./models/Review'); `
+
+
+  - re-start database...
 
 
 //////////////////////
@@ -414,129 +425,131 @@ require('./models/Review');
 // ///////////////////    
 
 
-models/Store.js:
+* models/Store.js:
 
-- find reviews where the stores _id property === reviews store property
+    - find reviews where the stores ` _id property === reviews store property `
 
-storeSchema.virtual('reviews', {
-  ref: 'Review', // what model to link?
-  localField: '_id', // which field on the store?
-  foreignField: 'store' // which field on the review?
-});
+    ` storeSchema.virtual('reviews', {
+      ref: 'Review', // what model to link?
+      localField: '_id', // which field on the store?
+      foreignField: 'store' // which field on the review?
+    }); `
 
- -add default setting to virtual field on line #89
+   - add default setting to virtual field on line #89
 
- {
-   toJSON: { virtuals: true },
-   toOjbect: { virtuals: true }
- }
-
-
-models/Review.js:
--make sure that when review is queried it's going to automatically populate our author field
-
-function autopopulate(next) {
-  this.populate('author');
-  next();
-}
-
-reviewSchema.pre('find', autopopulate);
-reviewSchema.pre('findOne', autopopulate);
-
-models/Store.js:
-
--display reviews on each store
-function autopopulate(next) {
-  this.populate('reviews');
-  next();
-}
-
-storeSchema.pre('find', autopopulate);
-storeSchema.pre('findOne', autopopulate);
+   ` {
+     toJSON: { virtuals: true },
+     toOjbect: { virtuals: true }
+   } `
 
 
-views/mixins directory:
+* models/Review.js:
 
-create new _review.pug template   
+  - make sure that when review is queried it's going to automatically populate our author field
 
-views/store.pug:
--loop over each review per store
+  `  function autopopulate(next) {
+      this.populate('author');
+      next();
+    } `
 
-if store.reviews
-      .reviews
-        each review in store.reviews
-          .review
-            +review(review)
+  ` reviewSchema.pre('find', autopopulate); `
+  ` reviewSchema.pre('findOne', autopopulate); `
 
- -include review mixin
+* models/Store.js:
 
-include mixins/_review
+  - display reviews on each store:
 
+  `  function autopopulate(next) {
+        this.populate('reviews');
+        next();
+      } `
+
+    ` storeSchema.pre('find', autopopulate); `
+    ` storeSchema.pre('findOne', autopopulate); `
+
+
+* views/mixins directory:
+
+ - create new `_review.pug` template   
+
+* views/store.pug:
+
+  - loop over each review per store
+
+  `  if store.reviews
+          .reviews
+            each review in store.reviews
+              .review
+                +review(review) `
+
+     - include review mixin
+
+     - include` mixins/_review`
 
 ///////////////////////
 // Advanced aggregation
 // ////////////////////   
 
-Get list of top 10 stores based on their avg rating:
+* Get list of top 10 stores based on their avg rating:
 
-routes/index.js:
+    * routes/index.js:
 
-router.get('/top', catchErrors(storeController.getTopStores));
+    ` router.get('/top', catchErrors(storeController.getTopStores` `
 
-controllers/storeController.js:
+* controllers/storeController.js:
 
-exports.getTopStores = async (req, res) => {
+` exports.getTopStores = async (req, res) => {
   const stores = await Store.getTopStores();
   res.render('topStores', { stores, title:'⭐ Top Stores!'});
-}
+} `
 
-views directory:
+* views directory:
 
--create topStores.pug template
+ - create topStores.pug template
 
-models/Store.js:
+* models/Store.js:
 
--create aggregation query to get top stores
+  - create aggregation query to get top stores
 
-data/load-sample-data.json:
+* data/load-sample-data.json:
 
--uncomment out these lines
+    - uncomment out these lines
 
-line 10
-const Review = require('../models/Review');
+    ` line 10
+    const Review = require('../models/Review');
 
-line 15
-const reviews = JSON.parse(fs.readFileSync(__dirname + '/reviews.json', 'utf-8'));
+    line 15
+    const reviews = JSON.parse(fs.readFileSync(__dirname + '/reviews.json', 'utf-8'));
 
-line 21
-await Review.remove();
+    line 21
+    await Review.remove();
 
-line 30
-await Review.insertMany(reviews);
+    line 30
+    await Review.insertMany(reviews); `
 
-stop server
+    - stop server
 
--delete all current stores and import new ones
+    - delete all current stores and import new ones
 
-npm run blowitallaway
+    ` npm run blowitallaway `
 
-npm run sample ///import new data
+    ` npm run sample ` ///import new data
 
-npm start //restart server
+    ` npm start ` //restart server
 
 
--display how many reviews are on each store:
+* display how many reviews are on each store:
 
-models/Store.js:
+* models/Store.js:
 
-create autopopulate function
+* create `autopopulate function`
 
-views/mixins/_storeCard.pug:
+  `  views/mixins/_storeCard.pug:
 
-if store.reviews
-  .store__action.store__action--count
-    != h.icon('review')
-    span= store.reviews.length
+    if store.reviews
+      .store__action.store__action--count
+        != h.icon('review')
+        span= store.reviews.length `
 
 
 ///////////////////////
@@ -544,24 +557,26 @@ if store.reviews
 // // ////////////////////
 
 
-routes/index.js:
+* routes/index.js:
 
-line 11
-router.get('/stores/page/:page', catchErrors(storeController.getStores));
+    line 11
+    ` router.get('/stores/page/:page',  catchErrors(storeController.getStores)); `
 
-controllers/storeController.js:
+* controllers/storeController.js:
 
-modify getStores method to implement pagination
+    - modify getStores method to implement pagination
 
-views/mixins directory:
--create new _pagination.pug template
+* views/mixins directory:
 
-views/stores.pug
--include _pagination.pug mixin
+ -create new `_pagination.pug` template
 
-include mixins/_pagination
+* views/stores.pug
 
-+pagination(page, pages, count)
+  - include `_pagination.pug` mixin
+
+  - include `mixins/_pagination`
+
+   +pagination(page, pages, count)
 
 
 ///////////////////
@@ -570,45 +585,45 @@ include mixins/_pagination
 
 If don't already have a Git repo:
 
-create .gitignore file:
+* create .gitignore file:
 
-add:
+      add:
 
-variables.env
-variables.env.now
-node_modules/
-.DS_Store
-*.log
-.idea
-haters/
+      ` variables.env
+        variables.env.now
+        node_modules/
+        .DS_Store
+        *.log
+        .idea
+        haters/ `
 
-Create repo:
-git init
-git status
-git add -A  or git add .
-git commit -m 'app'
-git push origin master
-
-
-variable.env file:
-
-If have test database, create 2nd database
-..can use MLAB...
-
-If creating your own MongoDB database, must set username and password to prevent getting hacked!
-By default MongoDB does not come w/a username and Password!
+    *  Create repo:
+      ` git init
+        git status
+        git add -A  or git add .
+        git commit -m 'app'
+        git push origin master `
 
 
-Use https://postmarkapp.com for email service
+* variable.env file:
+
+  - If have test database, create 2nd database
+  ..can use MLAB...
+
+  - If creating your own MongoDB database, must set username and password to prevent getting hacked!
+  By default MongoDB does not come w/a username and Password!
 
 
-Change port in .env to 80
+ - Use https://postmarkapp.com for email service
 
-package.json:
 
-rename start to 'dev' ..now run npm run dev instead of start whenever need to run app locally
+ - Change port in .env to 80
 
-run node start.js to start app
+* package.json:
+
+  rename start to 'dev' ..now run npm run dev instead of start whenever need to run app locally
+
+  run node start.js to start app
 
 
 ////////
@@ -620,51 +635,51 @@ https://zeit.co/now
 
 In package.json:
 
-rename site/app
+    - rename site/app
 
-"now": {
-  "dotenv": "variables.env.now"
-}
+  `  "now": {
+      "dotenv": "variables.env.now"
+    } `
 
-copy/paste variable.env and create variables.env.now
+    - copy/paste variable.env and create variables.env.now
 
-npm install now -g
+    ` npm install now -g `
 
-run now //From directory to be deployed
+    - run now //From directory to be deployed
 
-https://snacks-n-hangs-mviteyfgka.now.sh
+    https://snacks-n-hangs-mviteyfgka.now.sh
 
 ///////////////////
 // Deploy to Heroku
 // ////////////////   
 
-1- create new app via Heroku UI
+* 1- create new app via Heroku UI
    -set up env variables via Heroku UI/Settings/Config Vars + choose node buildpack
 
 
-Bash:
-2-
-$ heroku login
-$ cd my-project/
-$ git init
-$ heroku git:remote -a snacks-n-hangs
-$ git add .
-$ git commit -am "make it better"
-$ git push heroku master
+* Bash:
+* 2-
+  $ heroku login
+  $ cd my-project/
+  $ git init
+  $ heroku git:remote -a snacks-n-hangs
+  $ git add .
+  $ git commit -am "make it better"
+  $ git push heroku master
 
 
-If existing Git repo, but in this case not:
-$ heroku git:remote -a snacks-n-hangs
+- If existing Git repo, but in this case not:
+  $ heroku git:remote -a snacks-n-hangs
 
 
 
 
-Watch Sass in separate terminal:
+* Watch Sass in separate terminal:
 
-sass --watch public/sass/style.scss:public/dist/style.css
+  ` sass --watch public/sass/style.scss:public/dist/style.css `
 
 
-Note: This app is running node 7.10.1 run...nvm use 7.10.1 if app crashes
+  Note: This app is running node 7.10.1 run...nvm use 7.10.1 if app crashes
 
 ## For security checks run:
 
