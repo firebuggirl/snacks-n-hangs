@@ -7,13 +7,13 @@ Just you wait folks!
 To load sample data, run the following command in your terminal:
 
 ```bash
-npm run sample
+` npm run sample `
 ```
 
 If you have previously loaded in this data, you can wipe your database 100% clean with:
 
 ```bash
-npm run blowitallaway
+` npm run blowitallaway `
 ```
 
 That will populate 16 stores with 3 authors and 41 reviews. The logins for the authors are as follows:
@@ -28,7 +28,7 @@ That will populate 16 stores with 3 authors and 41 reviews. The logins for the a
 run localhost:7777
 
 To see what themes, fonts, settings, etc... that Wes uses,
-go to wesbos.com/uses
+go to `wesbos.com/uses`
 
 
 Make sure that node 7.10 is being used via
@@ -37,17 +37,14 @@ nvm use 7.10 , otherwise app will not work.
 created account @ mlab.com for hosting mongodb DBs
 
 
-To reference a value/variable in pug file:
+* To reference a value/variable in pug file:
 
 ` #{dog} ` ....for text
 alt=`Dog ${dog}`  ....for attributes have to use es6 JS syntax
 
 
-To override block header in layout.pug,
-type
-block header
-in index.js (or other template file) to
-override template header in layout.pug
+* To override block header in layout.pug,
+type `block header` in `index.js` (or other template file) to override template header in layout.pug
 
 Note: I'm using tabs to space content,
 Wes is using two spaces
@@ -55,7 +52,7 @@ Wes is using two spaces
 Anywhere you see app.use -> means using global middleware
 
 
-To create a 'dump' similar to var dump, put this code into pug file:
+* To create a 'dump' similar to var dump, put this code into pug file:
 ex, in ` _storeForm.pug: pre= h.dump(store)`
 
 NOTE: app will not work if running node -v 6.9.5, make sure to first switch to node -v 7.10 in terminal: nvm use 7.10
@@ -216,7 +213,7 @@ if the correct user is logged in!
 // /////////////////
 
 * Store.js :
-  - define indexex ...index type of 'text' enables search for stores, etc...can now use '$text' operator on queries
+  - define indexes ...index type of 'text' enables search for stores, etc...can now use '$text' operator on queries
 
   - create compound index on 'name' and 'description' fields
 

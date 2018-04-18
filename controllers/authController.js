@@ -5,14 +5,17 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
-
-
+//const passport = require('passport-facebook');
+//
 exports.login = passport.authenticate('local', {//middlewart that comes with passport
   failureRedirect: '/login',
   failureFlash: 'Failed Login!',
   successRedirect: '/',
   successFlash: 'You are now logged in!'
 });
+
+
+
 
 // A 'strategy' in passport checks if if user has correct credentials to log in,
 //in this case we are using a 'local' strategy to check if

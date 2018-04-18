@@ -6,6 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+//const passport = require('passport-facebook');
 const promisify = require('es6-promisify');
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');//applies validation methods to every single request
@@ -44,9 +45,13 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
+
+
 // // Passport JS is what we use to handle our logins
-app.use(passport.initialize());
-app.use(passport.session());
+ app.use(passport.initialize());
+ app.use(passport.session());
+
+
 
 // // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
 app.use(flash());
@@ -56,7 +61,7 @@ app.use((req, res, next) => {
   res.locals.h = helpers;
   res.locals.flashes = req.flash();//pull out any flashes that need to be shown and put in locals
   res.locals.user = req.user || null;// locals are all of the variables available to you in your template
-  res.locals.currentPath = req.path;//passport makes req.user available to us by passing the user to our 'locals' 
+  res.locals.currentPath = req.path;//passport makes req.user available to us by passing the user to our 'locals'
   next();
 });
 

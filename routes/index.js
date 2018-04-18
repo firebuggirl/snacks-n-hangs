@@ -6,6 +6,7 @@ const authController = require('../controllers/authController');
 const reviewController = require('../controllers/reviewController');
 const { catchErrors } = require('../handlers/errorHandlers'); //{ catchErrors } = object destructuring/es6 ....pulling in entire object into variable
 
+
 router.get('/', catchErrors(storeController.getStores));
 router.get('/stores', catchErrors(storeController.getStores));
 router.get('/stores/page/:page', catchErrors(storeController.getStores));
@@ -27,6 +28,8 @@ router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 
 router.get('/tags', catchErrors(storeController.getStoresByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
+
+
 
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);
