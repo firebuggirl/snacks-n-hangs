@@ -681,3 +681,17 @@ In package.json:
 ## For security checks run:
 
 ` nsp check `
+
+
+3612771360.1677ed0.33778fd62c3d415eae99c0ef73f1c147
+
+
+## ERROR/Bug Fix:
+
+  - Updates were rejected because a pushed branch tip is behind its remote
+
+    ` git push -f git@heroku.com:<heroku repo name>.git
+    `
+
+        - fatal: The current branch master has no upstream branch.
+          To push the current branch and set the remote as upstream, use:

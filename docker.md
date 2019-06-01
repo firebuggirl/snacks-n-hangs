@@ -3,6 +3,9 @@ https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 
 - Docker containers are instances of...images
 
+## NOTE: some files are missing from this directory....gobbled up in icloud??
+## see `~/snacks-n-hangs` directory...clone from Heroku if need be
+
 `  docker build -t juliettet/snacks-n-hangs . ` // packages a Dockerfile into an image
 
 ` docker run -p 49160:8080 -d juliettet/snacks-n-hangs   ` // starts a Docker image and turns it into a container
