@@ -73,31 +73,6 @@ USER node
 # Build order:
 # dev => test => prod
 
-# Build dev:
-# docker build -t ultimatenode:dev --target dev .
-# or in this case, since `dev` is targeted in docker-compose, just run `docker-compose up`
-# Build + run dev:
-# docker build -t ultimatenode:dev --target dev . && docker run --init -p 80:80 ultimatenode:dev
-# Run dev w/bind mount => not working...:
-# docker run --init ultimatenode:dev -v $(pwd):/app ultimatenode:dev
-
-
-# Build test:
-# docker build -t ultimatenode:test --target test .
-# Run test => run after `docker-compose up`:
-# docker run --init ultimatenode:test
-
-
-# Build prod:
-# docker build -t ultimatenode:prod --target prod .
-# Run prod:
-# docker run --init ultimatenode:prod
-
+# Build/run instructions => see ./multi-stage-dockerfile.md
 
 # need the tini `--init` process for `ctrl + c`..stopping container..tini requires Alpine distro
-
-
-# Build + run test:
-# docker build -t ultimatenode:test --target test .
-# Run test:
-# docker run --init  ultimatenode:test

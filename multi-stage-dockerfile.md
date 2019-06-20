@@ -1,16 +1,7 @@
 https://www.udemy.com/docker-mastery-for-nodejs/learn/lecture/13970520#overview
 
 https://www.udemy.com/docker-mastery-for-nodejs/learn/lecture/13970520#overview
-<!--
-` docker build -t snacksnhangs:dev --target dev .
-`
 
-` docker build -t snacksnhangs:test --target test .
-`
-- OR => run security scanner if added to Dockerfile:
-
-` docker build --build-arg=MICROSCANNER_TOKEN=$MICROSCANNER -t snacksnhangs:test --target test . -->
-`
 - Added Tini to images so that containers will receive shutdown signals
 
 - enable/use Buildkit w/ Tini on `test` version => run above command w/ additional env variable below:
