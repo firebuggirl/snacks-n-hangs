@@ -19,24 +19,21 @@ mongoose.connection.on('error', (err) => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
 });
 
-// READY?! Let's go!
-
-// Import all of our models
+// Import all models
 
 require('./models/Store');
 
-//Import all of our users
 
 require('./models/User');
 
-//Import all of our reviews
+
 require('./models/Review');
 
-// Start our app!
+// Start app
 const app = require('./app');
 
 // Constants for Docker
-// const PORT = 8080;
+// const PORT = 7777;
 // const HOST = '0.0.0.0';//Docker host
 //
 //

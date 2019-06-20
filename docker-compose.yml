@@ -1,35 +1,46 @@
 # Run docker-compose build
 # Run docker-compose up
 # Live long and prosper
-
-version: '3'
+# Version '3' does not support 'target'
+version: '2.4'
 
 services:
 
   node:
-    container_name: snacksnhangscompose
-    image: snacksnhangscompose
+    container_name: snacksnhangs
+    image: snacksnhangs
+    healthcheck:
+      test: curl -f http://127.0.0.1
     build:
       context: .
-      dockerfile: ./node.development.dockerfile
+      target: dev
     volumes:
-      - .:/var/www/snacksnhangscomposemongo
+      - .:/app
     environment:
       - NODE_ENV=development
     ports:
       - "7777:7777"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     networks:
       - nodeapp-network
 
   #No authentication is provided here - just a demo! Read/search
   #for more information about adding authentication. Also, container names need to be unique
   mongodb:
-    container_name: snacksnhangscompose
     image: mongo
+    volumes:
+      - db-data:/data/configdb
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
     networks:
       - nodeapp-network
+
+
+
+volumes:
+    db-data:
 
 networks:
   nodeapp-network:
