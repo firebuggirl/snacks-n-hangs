@@ -7,7 +7,6 @@ LABEL org.opencontainers.image.licenses=MIT
 LABEL com.bretfisher.nodeversion=$NODE_VERSION
 
 ENV NODE_ENV=production
-#ENV PORT 7777
 EXPOSE 7777
 
 WORKDIR /app
