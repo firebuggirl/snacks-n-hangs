@@ -4,7 +4,7 @@
   "private": true,
   "main": "start.js",
   "engines": {
-    "node": ">= 10.13.0"
+    "node": ">= 11.6.0"
   },
   "now": {
     "dotenv": "variables.env.now"
