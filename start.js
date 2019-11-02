@@ -21,16 +21,6 @@ mongoose.connection.on('error', (err) => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
 });
 
-// mongoose.connect(process.env.ATLAS_DB);
-// const monDb = mongoose.connection;
-//
-// monDb.on('error', function() {
-//   console.error('MongoDB Connection Error. Please make sure that', process.env.ATLAS_DB, 'is running.');
-// });
-//
-// monDb.once('openUri', function callback() {
-//   console.info('Connected to MongoDB:', process.env.ATLAS_DB);
-// });
 // Import all models
 
 require('./models/Store');
