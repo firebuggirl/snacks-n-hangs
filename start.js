@@ -12,25 +12,25 @@ if (major <= 7 && minor <= 5) {
 require('dotenv').config({ path: 'variables.env' });
 
 // Connect to our Database and handle an bad connections
-mongoose.connect(process.env.DATABASE);
-//mongoose.connect(process.env.ATLAS_DB);
-// mongoose.connect(process.env.LOCAL_DB);
-//mongoose.connect(process.env.DOCKER_DB);
-mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
-mongoose.connection.on('error', (err) => {
-  console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+// mongoose.connect(process.env.DATABASE);
+// mongoose.connect(process.env.ATLAS_DB);
+// // mongoose.connect(process.env.LOCAL_DB);
+// //mongoose.connect(process.env.DOCKER_DB);
+// mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
+// mongoose.connection.on('error', (err) => {
+//   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+// });
+
+mongoose.connect(process.env.ATLAS_DB);
+const monDb = mongoose.connection;
+
+monDb.on('error', function() {
+  console.error('MongoDB Connection Error. Please make sure that', process.env.ATLAS_DB, 'is running.');
 });
 
-// mongoose.connect(process.env.ATLAS_DB);
-// const monDb = mongoose.connection;
-//
-// monDb.on('error', function() {
-//   console.error('MongoDB Connection Error. Please make sure that', process.env.ATLAS_DB, 'is running.');
-// });
-//
-// monDb.once('openUri', function callback() {
-//   console.info('Connected to MongoDB:', process.env.ATLAS_DB);
-// });
+monDb.once('openUri', function callback() {
+  console.info('Connected to MongoDB:', process.env.ATLAS_DB);
+});
 // Import all models
 
 require('./models/Store');
