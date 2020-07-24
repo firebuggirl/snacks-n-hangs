@@ -2,7 +2,8 @@ const nodemailer = require('nodemailer');//interface with SMTP or any other tran
 const pug = require('pug');
 const juice = require('juice'); //inlines CSS
 const htmlToText = require('html-to-text');
-const promisify = require('es6-promisify');
+// const promisify = require('es6-promisify');
+const promisify = require("promisify-node");
 
 const transport = nodemailer.createTransport({//a way to interface with different ways of sending email, with SMPT being the most popular
   host: process.env.MAIL_HOST,
