@@ -7,7 +7,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 //const passport = require('passport-facebook');
-const promisify = require('es6-promisify');
+// const promisify = require('es6-promisify');
+var promisify = require("promisify-node");
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');//applies validation methods to every single request
 const routes = require('./routes/index');
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator());
+
 
 // populates req.cookies with any cookies that came along with the request
 app.use(cookieParser());
@@ -67,8 +69,11 @@ app.use((req, res, next) => {
 
 // promisify some callback based APIs
 app.use((req, res, next) => {
-  req.login = promisify(req.login, req);
+  //req.login = promisify(req.login, req);
+  promisify(req.login);
   next();
+
+
 });
 
 // After allllll that above middleware, we finally handle our own routes!
