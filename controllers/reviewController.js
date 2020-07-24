@@ -7,6 +7,6 @@ exports.addReview = async (req, res) => {
   req.body.store = req.params.id;//store ID is in the URL (ie., params)
   const newReview = new Review(req.body); //create new review model
   await newReview.save();
-  req.flash('success', 'Revivew Saved!');
+  req.flash('success', 'Review Saved!');
   res.redirect('back');
 };
