@@ -74,17 +74,18 @@ exports.getStores = async (req, res) => {
     .limit(limit)
     .sort({ created: 'desc' }); //sort descending...show latest store 1st
 
-  const countPromise = Store.count();//get count of all stores in database
+//NOTE: 7/2020 countDocuments() replaced .count()
+  const countPromise = Store.countDocuments();//get count of all stores in database
 //Fire off storesPromise & countPromise @ same time BUT 'wait' for both to come back
-  const [stores, count] = await Promise.all([storesPromise, countPromise]); //pass in array of promises
-  const pages = Math.ceil(count / limit); //get upper limit of # stores / how many per page
+  const [stores, countDocuments] = await Promise.all([storesPromise, countPromise]); //pass in array of promises
+  const pages = Math.ceil(countDocuments / limit); //get upper limit of # stores / how many per page
   if (!stores.length && skip) {//redirect to last page of pagination if page requested does not exist
     req.flash('info', `Hey! You asked for page ${page}. But that doesn't exist. So I put you on page ${pages}`);
     res.redirect(`/stores/page/${pages}`);
     return;
   }
 
-  res.render('stores', { title: 'Stores', stores, page, pages, count });
+  res.render('stores', { title: 'Stores', stores, page, pages, countDocuments });
 };
 
 //create function to confirmOwner before moving on to editStore middleware + run it inside of editStore
