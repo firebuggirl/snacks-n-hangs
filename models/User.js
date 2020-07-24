@@ -31,11 +31,13 @@ const userSchema = new Schema({
 
 // A virtual field in Mongoose is something that can be
 // generated on the fly
-userSchema.virtual('gravatar').get(function() {
-  //const hash = md5(this.email);//md5 is the algorithm used by gravatar to hash user's email address
-  const hash = bcrypt.hash(this.email)
-  return `https://gravatar.com/avatar/${hash}?s=200`;//S = size
-});
+// userSchema.virtual('gravatar').get(function() {
+//   //const hash = md5(this.email);//md5 is the algorithm used by gravatar to hash user's email address
+//   const hash = bcrypt.hash(this.email)
+//   return `https://gravatar.com/avatar/${hash}?s=200`;//S = size
+// });
+
+
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 userSchema.plugin(mongodbErrorHandler);
