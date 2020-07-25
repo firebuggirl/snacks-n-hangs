@@ -617,7 +617,7 @@ In package.json:
 
     `npm install now -g`
 
-  - run now //From directory to be deployed
+  - run `now` //From directory to be deployed
 
     https://snacks-n-hangs-mviteyfgka.now.sh
 
