@@ -16,7 +16,9 @@ require('dotenv').config({ path: 'variables.env' });
 // Connect to our Database and handle an bad connections
 //mongoose.connect(process.env.DATABASE, {useNewUrlParser: true});
 //mongoose.connect(process.env.ATLAS_DB, { useUnifiedTopology: true, useNewUrlParser: true });
-mongoose.connect(process.env.MLAB_JULY2020, { useUnifiedTopology: true, useNewUrlParser: true })
+
+// mongoose.connect(process.env.MLAB_JULY2020, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.DB_URI, { useUnifiedTopology: true, useNewUrlParser: true });
 // mongoose.connect(process.env.LOCAL_DB);
 //mongoose.connect(process.env.DOCKER_DB);
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
