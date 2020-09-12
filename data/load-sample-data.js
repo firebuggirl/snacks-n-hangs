@@ -2,7 +2,7 @@ require('dotenv').config({ path: __dirname + '/../variables.env' });
 const fs = require('fs');
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DB_URI, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.DB_URI_ATLAS_2020, { useUnifiedTopology: true, useNewUrlParser: true });
 //mongoose.connect(process.env.LOCAL_DB);
 //mongoose.connect(process.env.DOCKER_DB);
 
