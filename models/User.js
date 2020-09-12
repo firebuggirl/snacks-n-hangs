@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
-const bcrypt = require('bcryptjs');//bcrypt is better than md5 for security
+//const bcrypt = require('bcryptjs');//bcrypt is better than md5 for security
 const validator = require('validator');//validate email
 const mongodbErrorHandler = require('mongoose-mongodb-errors');//prettify default MongoDb errors
 const passportLocalMongoose = require('passport-local-mongoose');//add additional fields and methods to create new logins
+// const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new Schema({
   email: {
@@ -21,6 +22,7 @@ const userSchema = new Schema({
     required: 'Please supply a name',
     trim: true
   },
+  // password: { type: String, required: true },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   hearts: [ //one to many relationship...will be many hearts/fav stores
@@ -29,6 +31,7 @@ const userSchema = new Schema({
 
 });
 
+
 // A virtual field in Mongoose is something that can be
 // generated on the fly
 // userSchema.virtual('gravatar').get(function() {
@@ -36,7 +39,6 @@ const userSchema = new Schema({
 //   const hash = bcrypt.hash(this.email)
 //   return `https://gravatar.com/avatar/${hash}?s=200`;//S = size
 // });
-
 
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });

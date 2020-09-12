@@ -1,19 +1,58 @@
 const passport = require('passport');//library to log in
 //Handles all of the logging in, passport.js stuff, all password resets, and email sending
+// const bcrypt = require("bcryptjs");
+// const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 // const promisify = require('es6-promisify');
-const promisify = require("promisify-node");
+// use destructuring w/ promisify now => https://stackoverflow.com/questions/56361880/rejected-typeerror-promisify-is-not-a-function
+const { promisify } = require('util');
 const mail = require('../handlers/mail');
 
 
-exports.login = passport.authenticate('local', {//middlewart that comes with passport
+exports.login = passport.authenticate('local', {//middleware that comes with passport
   failureRedirect: '/login',
   failureFlash: 'Failed Login!',
   successRedirect: '/',
   successFlash: 'You are now logged in!'
 });
+// exports.login = (req, res, next) => {
+//   let fetchedUser;
+//   ({ email: req.body.email })
+//     .then(user => {
+//       if (!user) {
+//         return res.status(401).json({
+//           message: "Auth failed"
+//         });
+//       }
+//       fetchedUser = user;
+//       //return bcrypt.compare(req.body.password, user.password);
+//     })
+//     .then(result => {
+//       if (!result) {
+//         return res.status(401).json({
+//           message: "Auth failed"
+//         });
+//       }
+//     // const token = jwt.sign(
+//     //     { email: fetchedUser.email, userId: fetchedUser._id },
+//     //     process.env.JWT_KEY,
+//     //     { expiresIn: "1h" }
+//     //   );
+//     //   res.status(200).json({
+//     //     token: token,
+//     //     expiresIn: 3600,
+//     //     userId: fetchedUser._id
+//     //   });
+//     })
+//     .catch(err => {
+//       return res.status(401).json({
+//         message: "Invalid authentication credentials!"
+//       });
+//     });
+// }
+
 
 // A 'strategy' in passport checks if if user has correct credentials to log in,
 //in this case we are using a 'local' strategy to check if

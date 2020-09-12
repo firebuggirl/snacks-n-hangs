@@ -649,9 +649,6 @@ In package.json:
 
 `sass --watch public/sass/style.scss:public/dist/style.css`
 
-
-  Note: This app is running node 7.10.1 run...nvm use 7.10.1 if app crashes
-
 ## For security checks run:
 
 `nsp check`

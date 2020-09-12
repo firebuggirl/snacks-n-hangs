@@ -3,7 +3,8 @@ const pug = require('pug');
 const juice = require('juice'); //inlines CSS
 const htmlToText = require('html-to-text');
 // const promisify = require('es6-promisify');
-const promisify = require("promisify-node");
+// use destructuring w/ promisify now => https://stackoverflow.com/questions/56361880/rejected-typeerror-promisify-is-not-a-function
+const { promisify } = require('util');
 
 const transport = nodemailer.createTransport({//a way to interface with different ways of sending email, with SMPT being the most popular
   host: process.env.MAIL_HOST,

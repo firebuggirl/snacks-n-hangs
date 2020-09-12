@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+// <rejected> TypeError: promisify is not a function
 // const promisify = require('es6-promisify');
-const promisify = require("promisify-node");
+// use destructuring w/ promisify now => https://stackoverflow.com/questions/56361880/rejected-typeerror-promisify-is-not-a-function
+const { promisify } = require('util');
+const bcrypt = require("bcryptjs");
+
 
 exports.loginForm = (req, res) => {
   res.render('login', { title: 'Login' });
@@ -38,11 +42,18 @@ exports.validateRegister = (req, res, next) => {//if someone sends data to a url
 };
 // .register is a method provided by passportLocalMongoose, a plugin included in User.js
 exports.register = async (req, res, next) => {//register is the method that will take the password and hash/save it to db
+
   const user = new User({ email: req.body.email, name: req.body.name });
-  const register = promisify(User.register, User);//use promised based function instead of older styoe callback
+  // get rid of new error:
+  // TypeError: Right-hand side of 'instanceof' is not callable Express and Promisify
+  const register = promisify(User.register).bind(User);
+  // note: await will not work on its own => because register === normal callback function
+  // https://stackoverflow.com/questions/59296349/create-register-typeerror-right-hand-side-of-instanceof-is-not-callable-expr
   await register(user, req.body.password);
-  //res.send(It works!);
-  next(); // pass to authController.login
+  next();
+
+  // res.send(It works!);
+  
 };
 
 

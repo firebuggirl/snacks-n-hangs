@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 //const passport = require('passport-facebook');
 // const promisify = require('es6-promisify');
-const promisify = require("promisify-node");
+// // use destructuring w/ promisify now => https://stackoverflow.com/questions/56361880/rejected-typeerror-promisify-is-not-a-function
+const { promisify } = require('util');
 const flash = require('connect-flash');
 const expressValidator = require('express-validator');//applies validation methods to every single request
 const routes = require('./routes/index');
@@ -50,8 +51,8 @@ app.use(session({
 
 
 // // Passport JS is what we use to handle our logins
- app.use(passport.initialize());
- app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
