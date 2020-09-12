@@ -12,7 +12,7 @@ if (major < 13 && minor <= 11) {
 // import environmental variables from our variables.env file
 require('dotenv').config({ path: 'variables.env' });
 
-mongoose.connect(process.env.DB_URI_ATLAS_2020, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.DB_URI, { useUnifiedTopology: true, useNewUrlParser: true });
 //mongoose.connect(process.env.LOCAL_DB, { useUnifiedTopology: true, useNewUrlParser: true });
 //mongoose.connect(process.env.LOCAL_DB);//deprecated
 //mongoose.connect(process.env.DOCKER_DB);
