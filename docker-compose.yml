@@ -8,7 +8,7 @@ services:
 
   node:
     container_name: snacksnhangs
-    image: snacksnhangs
+    image: juliettet/snacksnhangs:oct2020
     healthcheck:
       test: curl -f http://127.0.0.1
     build:

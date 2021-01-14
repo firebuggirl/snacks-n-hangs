@@ -13,7 +13,6 @@ if (major < 13 && minor <= 11) {
 require('dotenv').config({ path: 'variables.env' });
 
 mongoose.connect(process.env.ATLAS_SANDBOX_URI, { useUnifiedTopology: true, useNewUrlParser: true });
-// mongoose.connect(process.env.DB_URI, { useUnifiedTopology: true, useNewUrlParser: true });
 //mongoose.connect(process.env.LOCAL_DB, { useUnifiedTopology: true, useNewUrlParser: true });
 //mongoose.connect(process.env.LOCAL_DB);//deprecated
 //mongoose.connect(process.env.DOCKER_DB);
