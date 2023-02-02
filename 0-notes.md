@@ -650,6 +650,20 @@ In package.json:
 heroku plugins:install apps-table
 heroku apps:table --filter="STACK=heroku-18"
 
+# create a test app deploy 1st
+heroku create --remote heroku-22 --stack heroku-22 snacks-n-hangs-heroku-22
+
+heroku addons --remote heroku
+
+# For each of the add-ons listed, create a corresponding counterpart on your test app:
+
+heroku addons:create --remote heroku-22 auth0
+
+heroku addons:create --remote heroku-22 snyk
+
+# For any config var present on your existing app that isn’t yet set on your test app, set it on the test app:
+
+heroku config:set --remote heroku-22 <name>=<value>
 ```
 
 * Watch Sass in separate terminal:
