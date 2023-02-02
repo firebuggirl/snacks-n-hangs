@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
-const md5 = require('md5');
+const md5 = require('md5');// scrypt is much better....9/2/22...come back..
 //const bcrypt = require('bcryptjs');//bcrypt is better than md5 for security
 const validator = require('validator');//validate email
 const mongodbErrorHandler = require('mongoose-mongodb-errors');//prettify default MongoDb errors

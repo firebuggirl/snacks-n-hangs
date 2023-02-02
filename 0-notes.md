@@ -54,7 +54,7 @@ ex, in ` _storeForm.pug: pre= h.dump(store)`
 
 
 ## Reset lost/forgotten password
- 
+
 ### Multi-step process:
 
 - set a reset token, along with an expiration date, in user if user has email address on file
@@ -69,7 +69,7 @@ ex, in ` _storeForm.pug: pre= h.dump(store)`
 
 
 -  `authController.js`:
- 
+
   - create 'forgot' authentication method
   - import Mongoose
   - include reference to user model
@@ -87,7 +87,7 @@ ex, in ` _storeForm.pug: pre= h.dump(store)`
  - resetPasswordExpires: Date to userSchema
 
 - `reset.pug`:
- 
+
  - create reset.pug file with reset form...leave off "action"   attribute so page will return to itself
 
 ## Sending email with Node.js
@@ -124,7 +124,7 @@ ex, in ` _storeForm.pug: pre= h.dump(store)`
   ## Create a relationship between each store and each actual  
 
  * `Store.js`:
-   
+
    ```js
     author: {
     type: mongoose.Schema.ObjectId,
@@ -176,7 +176,7 @@ if the correct user is logged in!
  `if user && store.author.equals(user._id)`
 
 ## Ajax Rest API
-   
+
 - `Loading sample data`:
 
     "sample" script in package.json -> runs script called load-sample-data.js (not part of our app, so need to 'require' env variables + connection to DB, etc..) + "blowitallaway" does the same, but then deletes everything
@@ -253,7 +253,7 @@ if the correct user is logged in!
   ```js
   exports.mapPage = (req, res) => {
     res.render('map', { title: 'Map' });
-  }; 
+  };
   ```
 
 - don't forget to include "photo" field on line 153 in order to see our API/photo for each location appear in maps
@@ -289,7 +289,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
 ```js
  hearts: [
     { type: mongoose.Schema.ObjectId, ref: 'Store' }
-  ] 
+  ]
 ```
 
 * mixins/storeCard.pug:
@@ -301,7 +301,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
         - const heartStrings = user.hearts.map(obj => obj.toString())
         - const heartClass = heartStrings.includes(store._id.toString()) ? 'heart__button--hearted' : ''
         button.heart__button(type="submit" name="heart" class=heartClass)
-          != h.icon('heart') 
+          != h.icon('heart')
     ```
 
  * routes/index.js:
@@ -343,11 +343,11 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
         _id: { $in: req.user.hearts }
       });
       res.render('stores', { title: 'Hearted Stores', stores });
-   }; 
+   };
    ```
 
 ## Adding a reviews data model
-   
+
 
 * routes/index.js:
 
@@ -405,7 +405,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
       ref: 'Review', // what model to link?
       localField: '_id', // which field on the store?
       foreignField: 'store' // which field on the review?
-    }); 
+    });
     ```
 
    - add default setting to virtual field on line #89
@@ -414,7 +414,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
     {
      toJSON: { virtuals: true },
      toOjbect: { virtuals: true }
-   } 
+   }
    ```
 
 
@@ -426,7 +426,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
     function autopopulate(next) {
       this.populate('author');
       next();
-    } 
+    }
   ```
 
   `reviewSchema.pre('find', autopopulate);`
@@ -440,7 +440,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
     function autopopulate(next) {
         this.populate('reviews');
         next();
-      } 
+      }
   ```
 
     `storeSchema.pre('find', autopopulate);`
@@ -460,8 +460,8 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
           .reviews
             each review in store.reviews
               .review
-                +review(review) 
-                
+                +review(review)
+
     ```
 
      - include review mixin
@@ -469,7 +469,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
      - include` mixins/_review`
 
 ## Advanced aggregation
-  
+
 
 * Get list of top 10 stores based on their avg rating:
 
@@ -483,7 +483,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
  exports.getTopStores = async (req, res) => {
   const stores = await Store.getTopStores();
   res.render('topStores', { stores, title:'⭐ Top Stores!'});
-} 
+}
 ```
 
 * views directory:
@@ -509,7 +509,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
     await Review.remove();
 
     //line 30
-    await Review.insertMany(reviews); 
+    await Review.insertMany(reviews);
     ```
 
     - stop server
@@ -535,7 +535,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
     if store.reviews
       .store__action.store__action--count
         != h.icon('review')
-        span= store.reviews.length 
+        span= store.reviews.length
     ```
 
 ## Implementing pagination
@@ -574,7 +574,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
         .DS_Store
         *.log
         .idea
-        haters/ 
+        haters/
       ```
 
 
@@ -599,7 +599,7 @@ Google maps library is already loaded `https://maps.googleapis.com/maps/api/js?k
   run node start.js to start app
 
 ## Deploy to 'Now'
- 
+
 
 https://zeit.co/now
 
@@ -610,7 +610,7 @@ In package.json:
    ```json
    "now": {
       "dotenv": "variables.env.now"
-    } 
+    }
     ```
 
 - copy/paste variable.env and create variables.env.now
@@ -622,7 +622,7 @@ In package.json:
     https://snacks-n-hangs-mviteyfgka.now.sh
 
 ## Deploy to Heroku
- 
+
 
 * 1- create new app via Heroku UI
    -set up env variables via Heroku UI/Settings/Config Vars + choose node buildpack
@@ -643,7 +643,14 @@ In package.json:
   $ heroku git:remote -a snacks-n-hangs
 
 
+## Upgrade Heroku Stack 2023
 
+```yaml
+# find outdated appl
+heroku plugins:install apps-table
+heroku apps:table --filter="STACK=heroku-18"
+
+```
 
 * Watch Sass in separate terminal:
 
@@ -652,6 +659,3 @@ In package.json:
 ## For security checks run:
 
 `nsp check`
-
-
-
